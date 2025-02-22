@@ -35,6 +35,7 @@ local DefaultPreferences = {
                     ["NPCScan Chimes"] = true,
                     ["NPCScan Ogre War Drums"] = true,
                 },
+                alsoSpeakNPCName = false,
             },
         },
         blacklist = {

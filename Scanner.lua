@@ -500,23 +500,38 @@ do
             Music = "Sound_EnableMusic",
             SFX = "Sound_EnableSFX",
         }
+        local SoundVolumeCVars = {
+            Ambience = "Sound_AmbienceVolume",
+            Master = "Sound_MasterVolume",
+            Music = "Sound_MusicVolume",
+            SFX = "Sound_SFXVolume",
+        }
 
         local function ResetStoredSoundCVars()
             for cvar, value in pairs(StoredSoundCVars) do
                 _G.SetCVar(cvar, value)
             end
-
+            -- Reset the table, otherwise previously-stored values will still be in the table
+            -- if the user changes which channel it outputs to
+            StoredSoundCVars = {}
             soundsAreOverridden = nil
         end
 
-        function PlayAlertSounds(overrideSoundCVars)
+        function PlayAlertSounds(overrideSoundCVars, npcName)
             local soundPreferences = private.db.profile.alert.sound
 
             if overrideSoundCVars and not soundsAreOverridden then
                 local channelCVar = SoundChannelCVars[soundPreferences.channel]
+                local volumeCVar = SoundVolumeCVars[soundPreferences.channel]
 
                 StoredSoundCVars[channelCVar] = _G.GetCVar(channelCVar)
                 _G.SetCVar(channelCVar, 1)
+                local volumeLevel = _G.GetCVar(volumeCVar) or ".1"
+                -- If it's too quiet, raise the volume, but don't necessarily blast them
+                if tonumber(volumeLevel) < .1 then
+                    _G.SetCVar(volumeCVar, .5)
+                    StoredSoundCVars[volumeCVar] = tostring(volumeLevel)
+                end
 
                 StoredSoundCVars.Sound_EnableSoundWhenGameIsInBG = _G.GetCVar("Sound_EnableSoundWhenGameIsInBG")
                 _G.SetCVar("Sound_EnableSoundWhenGameIsInBG", 1)
@@ -525,6 +540,19 @@ do
                 NPCScan:ScheduleTimer(ResetStoredSoundCVars, SOUND_RESTORE_INTERVAL_SECONDS)
             end
 
+            if soundPreferences.alsoSpeakNPCName then
+                -- Schedule the TTS a little later to try and make it so the speech isn't overlapped
+                -- by the alert sounds
+                C_Timer.After(2.5, function()
+                    -- C_TTSSettings.GetSpeechRate()
+                    C_VoiceChat.SpeakText(
+                        C_TTSSettings.GetVoiceOptionID(GlobalEnum.TtsVoiceType.Standard),
+                        npcName,
+                        GlobalEnum.VoiceTtsDestination.LocalPlayback,
+                        -5, -- slows down the speech a little
+                        C_TTSSettings.GetSpeechVolume())
+                end)
+            end
             for soundName in pairs(soundPreferences.sharedMediaNames) do
                 if soundPreferences.sharedMediaNames[soundName] ~= false then
                     _G.PlaySoundFile(LibSharedMedia:Fetch("sound", soundName), soundPreferences.channel)
@@ -544,14 +572,9 @@ do
         end
 
         if alert.sound.isEnabled and now > lastSoundTime + ALERT_SOUND_THROTTLE_INTERVAL_SECONDS then
-            PlayAlertSounds(alert.sound.ignoreMute)
+            PlayAlertSounds(alert.sound.ignoreMute, npcName)
 
             lastSoundTime = now
         end
-        -- TODO: add a preference
-        C_Timer.After(2.5, function()
-            -- C_TTSSettings.GetSpeechRate()
-            C_VoiceChat.SpeakText(C_TTSSettings.GetVoiceOptionID(GlobalEnum.TtsVoiceType.Standard), npcName, GlobalEnum.VoiceTtsDestination.LocalPlayback, -5, C_TTSSettings.GetSpeechVolume())
-        end)
     end
 end

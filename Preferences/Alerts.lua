@@ -286,7 +286,21 @@ local function GetAlertOptions()
                             width = "normal",
                             disabled = IsSoundDisabled,
                             func = function()
-                                private.PlayAlertSounds(true)
+                                private.PlayAlertSounds(true, "Hello " .. UnitName("player"))
+                            end,
+                        },
+                        alsoSpeakNPCName = {
+                            order = 20,
+                            name = L["Also speak NPC Name using Text To Speech"],
+                            desc = L["Will also speak the NPC's name using text to speech"],
+                            type = "toggle",
+                            width = "full",
+                            disabled = IsSoundDisabled,
+                            get = function()
+                                return profile.alert.sound.alsoSpeakNPCName
+                            end,
+                            set = function(_, value)
+                                profile.alert.sound.alsoSpeakNPCName = value
                             end,
                         },
                     },

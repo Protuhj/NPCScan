@@ -45,3 +45,5 @@ L["RIGHT"] = "Right"
 L["TOP"] = "Top"
 L["TOPLEFT"] = "Top Left"
 L["TOPRIGHT"] = "Top Right"
+L["Also speak NPC Name using Text To Speech"] = true
+L["Will also speak the NPC's name using text to speech"] = true
