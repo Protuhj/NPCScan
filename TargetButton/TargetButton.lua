@@ -598,14 +598,14 @@ local function CreateTargetButton(unitClassification)
     killedTextureFrame:SetPoint("CENTER")
     button.killedTextureFrame = killedTextureFrame
 
-    local killLeftTexture = killedTextureFrame:CreateTexture(nil, "OVERLAY", 1)
+    local killLeftTexture = killedTextureFrame:CreateTexture(nil, "OVERLAY", nil, 1)
     killLeftTexture:SetAlpha(0)
     killLeftTexture:SetSize(64, 64)
     killLeftTexture:SetAtlas("GarrMission_EncounterBar-Xleft")
     killLeftTexture:SetPoint("CENTER")
     killedTextureFrame.left = killLeftTexture
 
-    local killRightTexture = killedTextureFrame:CreateTexture(nil, "OVERLAY", 1)
+    local killRightTexture = killedTextureFrame:CreateTexture(nil, "OVERLAY", nil, 1)
     killRightTexture:SetAlpha(0)
     killRightTexture:SetSize(64, 64)
     killRightTexture:SetAtlas("GarrMission_EncounterBar-Xright")
@@ -615,22 +615,22 @@ local function CreateTargetButton(unitClassification)
     --------------------------------------------------------------------------------
     ---- FontStrings
     --------------------------------------------------------------------------------
-    local sourceText = button:CreateFontString(nil, "ARTWORK", 1)
+    local sourceText = button:CreateFontString(nil, "ARTWORK", nil, 1)
     sourceText:SetFontObject("GameFontNormalSmall")
     button.SourceText = sourceText
 
-    local unitName = button:CreateFontString(nil, "ARTWORK", 1)
+    local unitName = button:CreateFontString(nil, "ARTWORK", nil, 1)
     unitName:SetSize(165, 33)
     unitName:SetFontObject("GameFontNormalMed3")
     unitName:SetJustifyH("LEFT")
     unitName:SetJustifyV("MIDDLE")
     button.UnitName = unitName
 
-    local classification = button:CreateFontString(nil, "ARTWORK", 1)
+    local classification = button:CreateFontString(nil, "ARTWORK", nil, 1)
     classification:SetFontObject("GameFontNormalSmall")
     button.Classification = classification
 
-    local specialText = button:CreateFontString(nil, "ARTWORK", 1)
+    local specialText = button:CreateFontString(nil, "ARTWORK", nil, 1)
     button.SpecialText = specialText
 
     --------------------------------------------------------------------------------

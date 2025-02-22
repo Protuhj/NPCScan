@@ -15,6 +15,7 @@ local AddOnFolderName = ... ---@type string
 local private = select(2, ...) ---@type PrivateNamespace
 
 local Data = private.Data
+local GlobalEnum = Enum
 local Enum = private.Enum
 local EventMessage = private.EventMessage
 
@@ -59,7 +60,7 @@ do
             1,
             0
         )
-        NPCScan:DispatchSensoryCues()
+        NPCScan:DispatchSensoryCues(detectionData.npcName)
         NPCScan:SendMessage(EventMessage.DetectedNPC, detectionData)
 
         -- TODO: Make the Overlays object listen for the DetectedNPC message and run its own methods
@@ -534,7 +535,7 @@ do
         private.PlayAlertSounds = PlayAlertSounds
     end
 
-    function NPCScan:DispatchSensoryCues()
+    function NPCScan:DispatchSensoryCues(npcName)
         local alert = private.db.profile.alert
         local now = time()
 
@@ -547,5 +548,10 @@ do
 
             lastSoundTime = now
         end
+        -- TODO: add a preference
+        C_Timer.After(2.5, function()
+            -- C_TTSSettings.GetSpeechRate()
+            C_VoiceChat.SpeakText(C_TTSSettings.GetVoiceOptionID(GlobalEnum.TtsVoiceType.Standard), npcName, GlobalEnum.VoiceTtsDestination.LocalPlayback, -5, C_TTSSettings.GetSpeechVolume())
+        end)
     end
 end

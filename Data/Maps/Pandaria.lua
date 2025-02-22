@@ -288,3 +288,8 @@ Maps[MapID.TimelessIsle].NPCs = {
     [73704] = true, -- Stinkbraid
     [73854] = true, -- Cranegnasher
 }
+
+Maps[555].NPCs= {
+    [73157] = true, -- Rock Moss,
+    [72769] = true, -- Spirit of Jadefire
+}

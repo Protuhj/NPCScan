@@ -34,7 +34,7 @@ local LOCALIZED_SOUND_CHANNELS = {
     _G.AMBIENCE_VOLUME,
     _G.MASTER,
     _G.MUSIC_VOLUME,
-    _G.SOUND_VOLUME,
+    _G.FX_VOLUME,
 }
 
 local SOUND_CHANNEL_INDICES = {}
@@ -242,7 +242,7 @@ local function GetAlertOptions()
                         },
                         channel = {
                             order = 30,
-                            name = _G.SOUND_CHANNELS,
+                            name = _G.AUDIO_CHANNELS,
                             descStyle = "inline",
                             type = "select",
                             values = LOCALIZED_SOUND_CHANNELS,

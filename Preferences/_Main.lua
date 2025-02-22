@@ -13,6 +13,7 @@ local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 --------------------------------------------------------------------------------
 ---- Initialization
 --------------------------------------------------------------------------------
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local buildVersion = GetAddOnMetadata(AddOnFolderName, "Version")
 local isDevelopmentVersion = false
 local isAlphaVersion = false
